@@ -146,21 +146,4 @@ const SignIn: React.FC = () => {
   );
 };
 
-// export const getServerSideProps: GetServerSideProps = async (ctx) => {
-//   const { "choconatys.token": token } = parseCookies(ctx);
-
-//   if (token) {
-//     return {
-//       redirect: {
-//         destination: "/",
-//         permanent: false,
-//       },
-//     };
-//   }
-
-//   return {
-//     props: {},
-//   };
-// };
-
 export default SignIn;

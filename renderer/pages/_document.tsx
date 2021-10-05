@@ -32,6 +32,7 @@ export default class MyDocument extends Document {
               href="https://fonts.googleapis.com/css2?family=Ephesis&display=swap"
               rel="stylesheet"
             ></link>
+            <meta name="theme-color" content="#4285f4" />
             {initialProps.styles}
             {sheet.getStyleElement()}
           </>

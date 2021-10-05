@@ -8,6 +8,7 @@ export default createGlobalStyle`
     --white: #ffffff;
     --primary: #FFAABA;
     --secondary: #FDC4CE;
+    --backgroundCard: #ffe0e6;
     --yellow: #FDC800;
     --gray: #DDDDDD;
     --background: #F7F7F7;
@@ -50,8 +51,8 @@ export default createGlobalStyle`
     color: var(--text);
   }
 
-  h2 {
-    color: var(--textSecondary);
+  h1, h2, h3, h4, h5, p {
+    color: var(--text);
   }
 
   a {

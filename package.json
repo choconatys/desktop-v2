@@ -1,9 +1,9 @@
 {
   "private": true,
-  "name": "my-nextron-app",
-  "description": "My application description",
+  "name": "sistema-choconatys",
+  "description": "Aplicativo desktop para gerenciar loja choconatys",
   "version": "1.0.0",
-  "author": "Yoshihide Shiono <shiono.yoshihide@gmail.com>",
+  "author": "João Mateus Games Coelho <mateusgamescoelho547@gmail.com>",
   "main": "app/background.js",
   "scripts": {
     "dev": "nextron",
@@ -13,6 +13,7 @@
   "dependencies": {
     "@emotion/react": "^11.4.1",
     "@emotion/styled": "^11.3.0",
+    "@material-ui/icons": "^4.11.2",
     "@mui/material": "^5.0.2",
     "axios": "^0.22.0",
     "electron-react-titlebar": "^1.1.0",
