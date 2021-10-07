@@ -13,12 +13,33 @@ import {
   BackgroundsWrapper,
   BackgroundInfo,
 } from "../styles/pages";
-import { api } from "../services/api";
 import Loading from "../components/loading";
 import balance from "../services/balance";
-import { GetServerSideProps } from "next";
+import { api } from "../services/api";
 
-const Dashboard: React.FC = ({ data }: any) => {
+const Dashboard: React.FC = () => {
+  const [loading, setLoading] = useState(true);
+  const [quantityUsers, setQuantityUsers] = useState(0);
+  const [faturamentoMensal, setFaturamentoMensal] = useState(0);
+  const [faturamentoDiario, setFaturamentoDiario] = useState(0);
+
+  useEffect(() => {
+    api
+      .get("/users/quantity")
+      .then((response: any) => {
+        setQuantityUsers(response.data.data.length);
+      })
+      .then(() => {
+        api
+          .get("/requests")
+          .then((response: any) => {
+            setFaturamentoMensal(response.data.data.faturamento.mensal);
+            setFaturamentoDiario(response.data.data.faturamento.diario);
+          })
+          .finally(() => setLoading(false));
+      });
+  }, []);
+
   return (
     <>
       <Head>
@@ -27,103 +48,108 @@ const Dashboard: React.FC = ({ data }: any) => {
 
       <Container>
         <Header />
-        <Content>
-          <BackgroundsWrapper>
-            <BackgroundInfo>
-              <div className="info">
-                <h1>Bem vindo de volta CHOCONATYS_ADMIN!</h1>
 
-                <p>
-                  A plataforma foi recentemente atualizada, caso tenha algum
-                  problema entre em contato no nosso email: eu@choconatys.com
-                </p>
+        {loading ? (
+          <Loading />
+        ) : (
+          <Content>
+            <BackgroundsWrapper>
+              <BackgroundInfo>
+                <div className="info">
+                  <h1>Bem vindo de volta CHOCONATYS_ADMIN!</h1>
 
-                <Button
-                  style={{
-                    marginTop: 40,
-                    width: 300,
-                  }}
-                >
-                  ENTRAR EM CONTATO
-                </Button>
-              </div>
-            </BackgroundInfo>
-          </BackgroundsWrapper>
+                  <p>
+                    A plataforma foi recentemente atualizada, caso tenha algum
+                    problema entre em contato no nosso email: eu@choconatys.com
+                  </p>
 
-          <Cards>
-            <Card elevation={0}>
-              <InformationCard>
-                <section className="top">
-                  <p>Faturamento Diário</p>
-                </section>
+                  <Button
+                    style={{
+                      marginTop: 40,
+                      width: 300,
+                    }}
+                  >
+                    ENTRAR EM CONTATO
+                  </Button>
+                </div>
+              </BackgroundInfo>
+            </BackgroundsWrapper>
 
-                <section className="info">
-                  <h1>{balance(data.faturamentoDiario)}</h1>
-                </section>
-              </InformationCard>
-              <div className="icon"></div>
-            </Card>
+            <Cards>
+              <Card elevation={0}>
+                <InformationCard>
+                  <section className="top">
+                    <p>Faturamento Diário</p>
+                  </section>
 
-            <Card elevation={0}>
-              <InformationCard>
-                <section className="top">
-                  <p>Total de Clientes</p>
-                </section>
+                  <section className="info">
+                    <h1>{balance(faturamentoDiario)}</h1>
+                  </section>
+                </InformationCard>
+                <div className="icon"></div>
+              </Card>
 
-                <section className="info">
-                  <h1>{data.quantityUsers}</h1>
-                </section>
-              </InformationCard>
-              <div className="icon"></div>
-            </Card>
+              <Card elevation={0}>
+                <InformationCard>
+                  <section className="top">
+                    <p>Total de Clientes</p>
+                  </section>
 
-            <Card elevation={0}>
-              <InformationCard>
-                <section className="top">
-                  <p>Faturamento Mensal</p>
-                </section>
+                  <section className="info">
+                    <h1>{quantityUsers}</h1>
+                  </section>
+                </InformationCard>
+                <div className="icon"></div>
+              </Card>
 
-                <section className="info">
-                  <h1>{balance(data.faturamentoMensal)}</h1>
-                </section>
-              </InformationCard>
-              <div className="icon"></div>
-            </Card>
-          </Cards>
-        </Content>
+              <Card elevation={0}>
+                <InformationCard>
+                  <section className="top">
+                    <p>Faturamento Mensal</p>
+                  </section>
+
+                  <section className="info">
+                    <h1>{balance(faturamentoMensal)}</h1>
+                  </section>
+                </InformationCard>
+                <div className="icon"></div>
+              </Card>
+            </Cards>
+          </Content>
+        )}
       </Container>
     </>
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const { req } = ctx;
+// export const getServerSideProps: GetServerSideProps = async (ctx) => {
+//   const { req } = ctx;
 
-  const { cookies } = req;
+//   const { cookies } = req;
 
-  const token = cookies["choconatys.token"];
+//   const token = cookies["choconatys.token"];
 
-  api.defaults.headers["Authorization"] = `Bearer ${token}`;
+//   api.defaults.headers["Authorization"] = `Bearer ${token}`;
 
-  const usersQuantity = await api
-    .get("/users/quantity")
-    .then((response: any) => {
-      return response.data.data;
-    });
+//   const usersQuantity = await api
+//     .get("/users/quantity")
+//     .then((response: any) => {
+//       return response.data.data;
+//     });
 
-  const requests = await api.get("/requests").then((response: any) => {
-    return response.data.data;
-  });
+//   const requests = await api.get("/requests").then((response: any) => {
+//     return response.data.data;
+//   });
 
-  return {
-    props: {
-      data: {
-        quantityUsers: usersQuantity.length,
-        faturamentoDiario: requests.faturamento.diario,
-        faturamentoMensal: requests.faturamento.mensal,
-      },
-    },
-  };
-};
+// return {
+//   props: {
+//     data: {
+//       quantityUsers: usersQuantity.length,
+//       faturamentoDiario: requests.faturamento.diario,
+//       faturamentoMensal: requests.faturamento.mensal,
+//     },
+//   },
+// };
+// };
 
 export default Dashboard;

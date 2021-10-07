@@ -1,6 +1,6 @@
 import Head from "next/head";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import Header from "../components/header";
 import Button from "../components/button";
@@ -14,7 +14,7 @@ import TableRow from "@mui/material/TableRow";
 
 import { Container, Content } from "../styles/pages/products";
 import { Paper } from "@mui/material";
-import { GetServerSideProps } from "next";
+import { GetServerSideProps, GetStaticProps } from "next";
 import { api } from "../services/api";
 
 import ProductsData from "../interface/products";
@@ -24,16 +24,23 @@ import balance from "../services/balance";
 import { useAlert } from "../providers/alert";
 import Loading from "../components/loading";
 
-interface ProductsProps {
-  data: ProductsData[];
-}
-
-const Products: React.FC<ProductsProps> = ({ data }: ProductsProps) => {
-  const [products, setProducts] = useState(() => data);
-  const [loading, setLoading] = useState<boolean>(false);
+const Products: React.FC = () => {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState<boolean>(true);
   const router = useRouter();
 
   const { addAlert } = useAlert();
+
+  useEffect(() => {
+    api
+      .get("/products/all")
+      .then((response: any) => {
+        setProducts(response.data.data);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, []);
 
   const toggleStatus = async (id) => {
     setLoading(true);
@@ -127,26 +134,6 @@ const Products: React.FC<ProductsProps> = ({ data }: ProductsProps) => {
       </Container>
     </>
   );
-};
-
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const { req } = ctx;
-
-  const { cookies } = req;
-
-  const token = cookies["choconatys.token"];
-
-  api.defaults.headers["Authorization"] = `Bearer ${token}`;
-
-  const productsData = await api.get("/products/all").then((response: any) => {
-    return response.data.data;
-  });
-
-  return {
-    props: {
-      data: productsData,
-    },
-  };
 };
 
 export default Products;
