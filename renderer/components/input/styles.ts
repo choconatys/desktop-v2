@@ -8,6 +8,6 @@ export const Container = styled(TextField)`
   background: var(--white);
 
   & + & {
-    margin-top: 1.2rem;
   }
+  margin-bottom: 1.2rem;
 `;

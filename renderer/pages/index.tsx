@@ -1,4 +1,4 @@
-import { Paper } from "@mui/material";
+import { useEffect, useState } from "react";
 import Head from "next/head";
 
 import Header from "../components/header";
@@ -13,8 +13,12 @@ import {
   BackgroundsWrapper,
   BackgroundInfo,
 } from "../styles/pages";
+import { api } from "../services/api";
+import Loading from "../components/loading";
+import balance from "../services/balance";
+import { GetServerSideProps } from "next";
 
-const Dashboard: React.FC = () => {
+const Dashboard: React.FC = ({ data }: any) => {
   return (
     <>
       <Head>
@@ -23,7 +27,6 @@ const Dashboard: React.FC = () => {
 
       <Container>
         <Header />
-
         <Content>
           <BackgroundsWrapper>
             <BackgroundInfo>
@@ -55,7 +58,7 @@ const Dashboard: React.FC = () => {
                 </section>
 
                 <section className="info">
-                  <h1>R$ 0,00</h1>
+                  <h1>{balance(data.faturamentoDiario)}</h1>
                 </section>
               </InformationCard>
               <div className="icon"></div>
@@ -68,7 +71,7 @@ const Dashboard: React.FC = () => {
                 </section>
 
                 <section className="info">
-                  <h1>1</h1>
+                  <h1>{data.quantityUsers}</h1>
                 </section>
               </InformationCard>
               <div className="icon"></div>
@@ -81,7 +84,7 @@ const Dashboard: React.FC = () => {
                 </section>
 
                 <section className="info">
-                  <h1>R$ 0,00</h1>
+                  <h1>{balance(data.faturamentoMensal)}</h1>
                 </section>
               </InformationCard>
               <div className="icon"></div>
@@ -91,6 +94,36 @@ const Dashboard: React.FC = () => {
       </Container>
     </>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const { req } = ctx;
+
+  const { cookies } = req;
+
+  const token = cookies["choconatys.token"];
+
+  api.defaults.headers["Authorization"] = `Bearer ${token}`;
+
+  const usersQuantity = await api
+    .get("/users/quantity")
+    .then((response: any) => {
+      return response.data.data;
+    });
+
+  const requests = await api.get("/requests").then((response: any) => {
+    return response.data.data;
+  });
+
+  return {
+    props: {
+      data: {
+        quantityUsers: usersQuantity.length,
+        faturamentoDiario: requests.faturamento.diario,
+        faturamentoMensal: requests.faturamento.mensal,
+      },
+    },
+  };
 };
 
 export default Dashboard;

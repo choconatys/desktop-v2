@@ -109,6 +109,7 @@ export default createGlobalStyle`
   }
 
   .circle {
+    cursor: pointer;
     height: 1.5rem;
     width: 1.5rem;
 
@@ -123,12 +124,20 @@ export default createGlobalStyle`
     background: var(--orange);
   }
 
+  .red {
+    background: red;
+  }
+
   .yellow {
     background: var(--yellow);
   }
 
   .blue {
     background: var(--blue);
+  }
+
+  .photoField {
+    margin-bottom: 2rem;
   }
 `;
 

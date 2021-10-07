@@ -15,8 +15,6 @@ const Header: React.FC = () => {
   return (
     <Drawer variant="permanent" anchor="left">
       <Container>
-        {/* <p>CHOCONATYS_ADMIN</p> */}
-
         <Link href="/">
           <a className={pathname === "/" ? "active" : ""}>
             <EqualizerIcon />
@@ -25,7 +23,13 @@ const Header: React.FC = () => {
         </Link>
 
         <Link href="/products">
-          <a className={pathname === "/products" ? "active" : ""}>
+          <a
+            className={
+              pathname === "/products" || pathname === "/productsCreate"
+                ? "active"
+                : ""
+            }
+          >
             <DehazeIcon />
             Produtos
           </a>
