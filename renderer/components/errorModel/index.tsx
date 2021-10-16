@@ -40,7 +40,7 @@ const ErrorModel: React.FC<ErrorModelProps> = ({
       initial={{ y: 20, opacity: 0 }}
       animate={animationControl}
     >
-      <Background type={type} />
+      {/* <Background type={type} /> */}
 
       <section className="info">
         <h1>{title}</h1>
