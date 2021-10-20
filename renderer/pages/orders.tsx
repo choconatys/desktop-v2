@@ -110,9 +110,15 @@ const Orders: React.FC = () => {
                           {balance(order.total)}
                         </TableCell>
                         <TableCell align="left">
-                          <button onClick={() => updateStatus(order.code)}>
-                            {order.status}
-                          </button>
+                          {order.status == "ENVIADO" ? (
+                            <button style={{ cursor: "no-drop" }} disabled>
+                              {order.status}
+                            </button>
+                          ) : (
+                            <button onClick={() => updateStatus(order.code)}>
+                              {order.status}
+                            </button>
+                          )}
                         </TableCell>
                       </TableRow>
                     );

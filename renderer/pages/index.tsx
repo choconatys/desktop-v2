@@ -20,7 +20,7 @@ import { api } from "../services/api";
 const Dashboard: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [quantityUsers, setQuantityUsers] = useState(0);
-  const [faturamentoMensal, setFaturamentoMensal] = useState(0);
+  const [faturamentoTotal, setFaturamentoTotal] = useState(0);
   const [faturamentoDiario, setFaturamentoDiario] = useState(0);
 
   useEffect(() => {
@@ -33,7 +33,7 @@ const Dashboard: React.FC = () => {
         api
           .get("/requests")
           .then((response: any) => {
-            setFaturamentoMensal(response.data.data.faturamento.mensal);
+            setFaturamentoTotal(response.data.data.faturamento.total || 0);
             setFaturamentoDiario(response.data.data.faturamento.diario);
           })
           .finally(() => setLoading(false));
@@ -105,11 +105,11 @@ const Dashboard: React.FC = () => {
               <Card elevation={0}>
                 <InformationCard>
                   <section className="top">
-                    <p>Faturamento Mensal</p>
+                    <p>Faturamento Total</p>
                   </section>
 
                   <section className="info">
-                    <h1>{balance(faturamentoMensal)}</h1>
+                    <h1>{balance(faturamentoTotal)}</h1>
                   </section>
                 </InformationCard>
                 <div className="icon"></div>
@@ -146,7 +146,7 @@ const Dashboard: React.FC = () => {
 //     data: {
 //       quantityUsers: usersQuantity.length,
 //       faturamentoDiario: requests.faturamento.diario,
-//       faturamentoMensal: requests.faturamento.mensal,
+//       faturamentoTotal: requests.faturamento.mensal,
 //     },
 //   },
 // };
