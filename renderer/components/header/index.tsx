@@ -48,13 +48,6 @@ const Header: React.FC = () => {
             Clientes
           </a>
         </Link>
-
-        <Link href="">
-          <a>
-            <StoreIcon />
-            Gerenciar
-          </a>
-        </Link>
       </Container>
     </Drawer>
   );
