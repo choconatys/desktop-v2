@@ -118,6 +118,9 @@ const SignIn: React.FC = () => {
                     onChange={(event: any) => setEmailField(event.target.value)}
                     required
                   />
+
+                  <div className="divisor"></div>
+
                   <Input
                     id="password"
                     type="password"

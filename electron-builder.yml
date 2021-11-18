@@ -1,6 +1,6 @@
-appId: com.example.nextron
-productName: My Nextron App
-copyright: Copyright © 2018 Yoshihide Shiono
+appId: com.choconatys.app
+productName: Choconatys
+copyright: Copyright © 2021 Choconatys Team
 directories:
   output: dist
   buildResources: resources

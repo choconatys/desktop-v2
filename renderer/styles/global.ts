@@ -116,6 +116,11 @@ export default createGlobalStyle`
     border-radius: 50%;
   }
 
+  .divisor {
+    height: 2rem;
+    padding: 1rem;
+  }
+
   .green {
     background: var(--green);
   }
