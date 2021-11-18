@@ -87,9 +87,9 @@ export function AuthProvider({ children }) {
         password,
       })
       .then((responseLogin: any) => {
-        const { user, token }: any = responseLogin.data.data;
+        const { user, token, isAdmin }: any = responseLogin.data.data;
 
-        if (user && token) {
+        if (user && token && isAdmin) {
           setCookie(undefined, "choconatys.token", token, {
             maxAge: 60 * 60 * 1, // UMA HORA
           });
@@ -106,11 +106,19 @@ export function AuthProvider({ children }) {
           return;
         }
 
-        addAlert({
-          severity: "error",
-          message: "Email ou Senha inválida!",
-        });
-        return;
+        if (isAdmin == false) {
+          addAlert({
+            severity: "error",
+            message: "Você não tem permissão de acesso!",
+          });
+          return;
+        } else {
+          addAlert({
+            severity: "error",
+            message: "Email ou Senha inválida!",
+          });
+          return;
+        }
       })
       .catch((errorLogin) => {
         addAlert({
