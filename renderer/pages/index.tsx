@@ -16,12 +16,15 @@ import {
 import Loading from "../components/loading";
 import balance from "../services/balance";
 import { api } from "../services/api";
+import { useAuth } from "../providers/auth";
 
 const Dashboard: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [quantityUsers, setQuantityUsers] = useState(0);
   const [faturamentoTotal, setFaturamentoTotal] = useState(0);
   const [faturamentoDiario, setFaturamentoDiario] = useState(0);
+
+  const { user } = useAuth();
 
   useEffect(() => {
     api
@@ -34,7 +37,7 @@ const Dashboard: React.FC = () => {
           .get("/requests")
           .then((response: any) => {
             setFaturamentoTotal(response.data.data.faturamento.total || 0);
-            setFaturamentoDiario(response.data.data.faturamento.diario);
+            setFaturamentoDiario(response.data.data.faturamento.diario || 0);
           })
           .finally(() => setLoading(false));
       });
@@ -56,21 +59,12 @@ const Dashboard: React.FC = () => {
             <BackgroundsWrapper>
               <BackgroundInfo>
                 <div className="info">
-                  <h1>Bem vindo de volta CHOCONATYS_ADMIN!</h1>
+                  <h1>Bem vindo de volta {user.name}!</h1>
 
                   <p>
                     A plataforma foi recentemente atualizada, caso tenha algum
                     problema entre em contato no nosso email: eu@choconatys.com
                   </p>
-
-                  <Button
-                    style={{
-                      marginTop: 40,
-                      width: 300,
-                    }}
-                  >
-                    ENTRAR EM CONTATO
-                  </Button>
                 </div>
               </BackgroundInfo>
             </BackgroundsWrapper>
